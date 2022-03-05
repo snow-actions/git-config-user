@@ -24,7 +24,7 @@ jobs:
 
       # default user
       - uses: ./
-      - run: test "$(git config user.name)" = "github actions[bot]"
+      - run: test "$(git config user.name)" = "github-actions[bot]"
       - run: test "$(git config user.email)" = "41898282+github-actions[bot]@users.noreply.github.com"
 
       # specified user
