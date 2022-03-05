@@ -8,30 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-without-parameters:
-    strategy:
-      fail-fast: false
-      matrix:
-        # Runs on all supported runners
-        # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#supported-runners-and-hardware-resources
-        os: [ ubuntu-20.04, ubuntu-18.04, windows-2022, windows-2019, windows-2016, macos-11, macos-10.15 ]
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 1
-    defaults:
-      run:
-        # powershell might be better on windows-*
-        shell: bash
-
-    steps:
-      - uses: actions/checkout@v3
-      - id: action
-        uses: ./
-      - run: test "${GREET}" = "Hello World"
-        env:
-          GREET: ${{ steps.action.outputs.greet }}
-      - run: test "$(cat greet.txt)" = "Hello World"
-
-  test-with-parameters:
+  test:
     strategy:
       fail-fast: false
       matrix:
@@ -44,18 +21,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - id: action
-        uses: ./
+
+      # default user
+      - uses: ./
+      - run: test "$(git config user.name)" = "github actions[bot]"
+      - run: test "$(git config user.email)" = "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # specified user
+      - uses: ./
         with:
-          who-to-greet: composite action
-      - run: test "${GREET}" = "Hello composite action"
-        env:
-          GREET: ${{ steps.action.outputs.greet }}
-      - run: test "$(cat greet.txt)" = "Hello composite action"
+          name: SnowCait
+          email: SnowCait@example.com
+      - run: test "$(git config user.name)" = "SnowCait"
+      - run: test "$(git config user.email)" = "SnowCait@example.com"
 
-  # Make up matrix statuses into a status for status checks in branch protection rules
   test-passing:
-    needs: [ test-without-parameters, test-with-parameters ]
+    needs: [ test ]
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
