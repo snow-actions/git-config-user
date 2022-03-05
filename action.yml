@@ -1,26 +1,25 @@
-name: 'Composite Action Template'
-description: 'Get started with Composite actions'
+name: 'Git config user'
+description: 'Set git user name and email address'
 inputs:
-  who-to-greet:
-    description: 'Who to greet'
-    required: true
-    default: 'World'
-outputs:
-  greet:
-    description: 'The word we greeted you'
-    value: ${{ steps.greet.outputs.word }}
+  name:
+    description: 'git config user.name'
+    required: false
+    default: github-actions[bot]
+  email:
+    description: 'git config user.email'
+    required: false
+    default: 41898282+github-actions[bot]@users.noreply.github.com
 runs:
   using: "composite"
   steps:
-    - id: greet
+    - name: git config user
       run: |
-        GREET="Hello ${WHO}"
-        echo "${GREET}"
-        echo "${GREET}" > greet.txt
-        echo "::set-output name=word::${GREET}"
+        git config user.name $NAME
+        git config user.email $EMAIL
       shell: bash
       env:
-        WHO: ${{ inputs.who-to-greet }}
+        NAME: ${{ inputs.name }}
+        EMAIL: ${{ inputs.email }}
 branding:
-  icon: 'award'  
-  color: 'green'
+  icon: 'github'  
+  color: 'black'
