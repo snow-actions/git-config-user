@@ -31,6 +31,11 @@ jobs:
           email: SnowCait@example.com
       - run: test "$(git config user.name)" = "SnowCait"
       - run: test "$(git config user.email)" = "SnowCait@example.com"
+      - name: Test committable
+        run: |
+          echo "test" > test
+          git add .
+          git commit -m "test"
 
   test-passing:
     needs: [ test ]
