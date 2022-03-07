@@ -23,6 +23,11 @@ jobs:
       - uses: ./
       - run: test "$(git config user.name)" = "github-actions[bot]"
       - run: test "$(git config user.email)" = "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Test committable
+        run: |
+          echo "test" > test
+          git add .
+          git commit -m "test"
 
       # specified user
       - uses: ./
@@ -31,11 +36,6 @@ jobs:
           email: SnowCait@example.com
       - run: test "$(git config user.name)" = "SnowCait"
       - run: test "$(git config user.email)" = "SnowCait@example.com"
-      - name: Test committable
-        run: |
-          echo "test" > test
-          git add .
-          git commit -m "test"
 
   test-passing:
     needs: [ test ]
