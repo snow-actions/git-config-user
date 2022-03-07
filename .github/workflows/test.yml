@@ -15,9 +15,6 @@ jobs:
         os: [ ubuntu-20.04, ubuntu-18.04, windows-2022, windows-2019, windows-2016, macos-11, macos-10.15 ]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 1
-    defaults:
-      run:
-        shell: bash
 
     steps:
       - uses: actions/checkout@v3
