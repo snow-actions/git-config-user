@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-default-user:
     strategy:
       fail-fast: false
       matrix:
@@ -18,13 +18,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      # default user
       - uses: ./
       - run: test "$(git config user.name)" = "github-actions[bot]"
       - run: test "$(git config user.email)" = "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Test committable
+        run: |
+          echo "test" > test
+          git add .
+          git commit -m "test"
 
-      # specified user
+  test-specified-user:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-20.04, ubuntu-18.04, windows-2022, windows-2019, macos-11, macos-10.15 ]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 1
+
+    steps:
+      - uses: actions/checkout@v3
       - uses: ./
         with:
           name: SnowCait
@@ -36,9 +48,8 @@ jobs:
           echo "test" > test
           git add .
           git commit -m "test"
-
   test-passing:
-    needs: [ test ]
+    needs: [ test-default-user, test-specified-user ]
     runs-on: ubuntu-latest
     timeout-minutes: 1
 
