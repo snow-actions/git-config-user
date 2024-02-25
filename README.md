@@ -1,4 +1,4 @@
-[![Test](https://github.com/snow-actions/git-config-user/actions/workflows/test.yml/badge.svg)](https://github.com/snow-actions/git-config-user/actions/workflows/test.yml)
+[![Test](https://github.com/snow-actions/git-config-user/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/snow-actions/git-config-user/actions/workflows/test.yml)
 
 # Git config user
 
